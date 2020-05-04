@@ -3,55 +3,55 @@ const HtmlWebpackPlugin = require('html-webpack-plugin'); // устанавли�
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-    devServer: {
-        port: 9000,
+  devServer: {
+    port: 9000,
+  },
+  entry: './src/index.js',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'app.bundle.js',
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+      filename: './index.html',
+      favicon: './src/favicon.ico',
+    }),
+  ],
+  module: {
+    rules: [{
+      test: /\.js$/,
+      exclude: /node_modules/,
+      use: {
+        loader: 'babel-loader',
+      },
     },
-    entry: './src/index.js',
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'app.bundle.js',
+    {
+      test: /\.css$/,
+      use: [
+        MiniCssExtractPlugin.loader, 'css-loader',
+      ],
     },
-    plugins: [
-        new MiniCssExtractPlugin({
-            filename: '[name].css',
-        }),
-        new HtmlWebpackPlugin({
-            template: './src/index.html',
-            filename: './index.html',
-            favicon: './src/favicon.ico',
-        }),
-    ],
-    module: {
-        rules: [{
-                test: /\.js$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader',
-                },
-            },
-            {
-                test: /\.css$/,
-                use: [
-                    MiniCssExtractPlugin.loader, 'css-loader',
-                ],
-            },
 
-            {
-                test: /\.html$/,
-                use: [{
-                    loader: 'html-loader',
-                }],
-            },
-            {
-                test: /\.(png)$/,
-                use: [{
-                    loader: 'file-loader',
-                    options: {
-                        esModule: false,
-                        name: '[name].[ext]',
-                    },
-                }],
-            },
-        ],
+    {
+      test: /\.html$/,
+      use: [{
+        loader: 'html-loader',
+      }],
     },
+    {
+      test: /\.(png)$/,
+      use: [{
+        loader: 'file-loader',
+        options: {
+          esModule: false,
+          name: '[name].[ext]',
+        },
+      }],
+    },
+    ],
+  },
 };
